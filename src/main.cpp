@@ -13,21 +13,21 @@
 
 
 // Create vacuum components
-gauge turbo;
-gauge transfer_chamber;
-gauge sample_chamber;
+gauge lpq;
+gauge sample;
+gauge optics;
+gauge cryo;
+gauge ccd;
 
-// gate valves (VAT)
-blockable_valve valve1(turbo, transfer_chamber);
-obstructable_valve valve2(transfer_chamber, sample_chamber);
 
-// angle valves (Pfeiffer)
-angle_valve valve3(valve1, valve2);
-angle_valve valve4(valve1, valve2);
-
+// Gate valves
+blockable_valve valve1(lpq, sample);
+blockable_valve valve2(sample, optics);
+blockable_valve valve3(optics, cryo);
+blockable_valve valve4(cryo, ccd);
 
 // Define ethernet interface
-byte mac[] = { 0x42, 0x23, 0x00, 0xC0, 0xFE, 0xFE };
+byte mac[] = { 0x42, 0x23, 0xC0, 0xFE, 0xFE, 0x12 };
 EthernetServer server = EthernetServer(23);
 
 
@@ -65,21 +65,16 @@ void setup(void){
     
     // Initialize and connect the vacuum components
     // Relay output of the TPG Controller(s)
-    //main_chamber.connect(CONTROLLINO_A10);
-    transfer_chamber.connect(CONTROLLINO_A11);
-    turbo.connect(CONTROLLINO_A12);
-    sample_chamber.connect(CONTROLLINO_A13);
-    //pre_pump.connect(CONTROLLINO_A14);
-    
-    // Vacuum valves
-    valve3.connect_third_valve(&valve4);
-    valve4.connect_third_valve(&valve3);
+    lpq.connect(CONTROLLINO_A11);
+    sample.connect(CONTROLLINO_A12);
+    optics.connect(CONTROLLINO_A13);
+    cryo.connect(CONTROLLINO_A14);
+    ccd.connect(CONTROLLINO_A15);
 
     valve1.connect(CONTROLLINO_D0, CONTROLLINO_A0, CONTROLLINO_A1);
-    valve2.connect(CONTROLLINO_D1, CONTROLLINO_A2, CONTROLLINO_A3, CONTROLLINO_A8);
+    valve2.connect(CONTROLLINO_D1, CONTROLLINO_A2, CONTROLLINO_A3);
     valve3.connect(CONTROLLINO_D2, CONTROLLINO_A4, CONTROLLINO_A5);
     valve4.connect(CONTROLLINO_D3, CONTROLLINO_A6, CONTROLLINO_A7);
-    
     
     //Register System SCPI commands
     scpi_init(&ctx);
@@ -157,18 +152,18 @@ void loop(){
         digitalWrite(CONTROLLINO_D8, HIGH);
         
         // Update state of the gauges
-        //main_chamber.update_state();
-        transfer_chamber.update_state();
-        turbo.update_state();
-        sample_chamber.update_state();
-        //pre_pump.update_state();
+        lpq.update_state();
+        sample.update_state();
+        optics.update_state();
+        cryo.update_state();
+        ccd.update_state();
         
         // update states of the valves
         valve1.update_state();
         valve2.update_state();
         valve3.update_state();
         valve4.update_state();
-        
+
         delay(20);
         digitalWrite(CONTROLLINO_D8, LOW);
         delay(20);

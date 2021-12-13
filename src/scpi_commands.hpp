@@ -10,16 +10,16 @@ extern uint8_t RESPONSE_LEN;
 extern char COMMAND_BUFFER[BUFFER_LEN];
 extern char SEND_BUFFER[BUFFER_LEN];
 
-//extern gauge main_chamber;
-extern gauge transfer_chamber;
-extern gauge turbo;
-extern gauge sample_chamber;
-//extern gauge pre_pump;
+//extern gauge lpq;
+//extern gauge sample;
+//extern gauge optics;
+//extern gauge ccd;
+
 
 extern blockable_valve valve1;
-extern obstructable_valve valve2;
-extern angle_valve valve3;
-extern angle_valve valve4;
+extern blockable_valve valve2;
+extern blockable_valve valve3;
+extern blockable_valve valve4;
 
 scpi_error_t identify(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t reset(struct scpi_parser_context* context, struct scpi_token* command);
@@ -41,4 +41,5 @@ scpi_error_t valve3_getstate(struct scpi_parser_context* context, struct scpi_to
 scpi_error_t valve4_open(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t valve4_close(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t valve4_getstate(struct scpi_parser_context* context, struct scpi_token* command);
+
 #endif
