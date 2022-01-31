@@ -7,7 +7,7 @@
 scpi_error_t identify(struct scpi_parser_context* context, struct scpi_token* command)
 {
     scpi_free_tokens(command);
-    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "OIC,Embedded SCPI Example,1,10\n");
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "Vaccum Controller 2 (4CH)\n");
     return SCPI_SUCCESS;
 }
 
@@ -58,7 +58,7 @@ scpi_error_t valve1_close(struct scpi_parser_context* context, struct scpi_token
 scpi_error_t valve1_getstate(struct scpi_parser_context* context, struct scpi_token* command)
 {
     scpi_free_tokens(command);
-    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%s\n", VALVE_STATE_STRING[valve1.state]);
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", valve1.state);
     return SCPI_SUCCESS;
 }
 
@@ -85,7 +85,7 @@ scpi_error_t valve2_close(struct scpi_parser_context* context, struct scpi_token
 scpi_error_t valve2_getstate(struct scpi_parser_context* context, struct scpi_token* command)
 {
     scpi_free_tokens(command);
-    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%s\n", VALVE_STATE_STRING[valve2.state]);
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", valve2.state);
     return SCPI_SUCCESS;
 }
 
@@ -112,7 +112,7 @@ scpi_error_t valve3_close(struct scpi_parser_context* context, struct scpi_token
 scpi_error_t valve3_getstate(struct scpi_parser_context* context, struct scpi_token* command)
 {
     scpi_free_tokens(command);
-    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%s\n", VALVE_STATE_STRING[valve3.state]);
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", valve3.state);
     return SCPI_SUCCESS;
 }
 
@@ -139,6 +139,6 @@ scpi_error_t valve4_close(struct scpi_parser_context* context, struct scpi_token
 scpi_error_t valve4_getstate(struct scpi_parser_context* context, struct scpi_token* command)
 {
     scpi_free_tokens(command);
-    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%s\n", VALVE_STATE_STRING[valve4.state]);
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", valve4.state);
     return SCPI_SUCCESS;
 }

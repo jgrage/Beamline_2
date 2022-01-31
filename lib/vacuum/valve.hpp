@@ -3,10 +3,10 @@
  */
 #ifndef VALVE_HPP
 #define VALVE_HPP
-    
-typedef enum VALVE_STATE{CLOSED = 0, OPEN = 1, MOVING = 2, CLOSED_BLOCKED = 3, OPEN_BLOCKED = 4} VALVE_STATE;
 
-static const char *VALVE_STATE_STRING[] = {"closed", "open", "moving", "closed_blocked", "open_blocked"};
+typedef enum VALVE_STATE{OPEN = 0,CLOSED = 1, MOVING = 2, CLOSED_BLOCKED = 3, OPEN_BLOCKED = 4} VALVE_STATE;
+
+//static const char *VALVE_STATE_STRING[] = {"closed", "open", "moving", "closed_blocked", "open_blocked"};
 
 class gauge;
 
