@@ -1,6 +1,7 @@
 #include <scpiparser.h>
 #include <valve.hpp>
 #include <gauge.hpp>
+#include <sample_holder.hpp>
 #include "scpi_commands.hpp"
 
 // System commands
@@ -140,5 +141,13 @@ scpi_error_t valve4_getstate(struct scpi_parser_context* context, struct scpi_to
 {
     scpi_free_tokens(command);
     RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", valve4.state);
+    return SCPI_SUCCESS;
+}
+
+// Sample commands
+scpi_error_t sample_holder_getstate(struct scpi_parser_context* context, struct scpi_token* command)
+{
+    scpi_free_tokens(command);
+    RESPONSE_LEN = snprintf(SEND_BUFFER, BUFFER_LEN, "%d\n", holder.state);
     return SCPI_SUCCESS;
 }

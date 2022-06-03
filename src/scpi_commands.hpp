@@ -21,6 +21,8 @@ extern blockable_valve valve2;
 extern blockable_valve valve3;
 extern blockable_valve valve4;
 
+extern sample_holder holder;
+
 scpi_error_t identify(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t reset(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t disconnect(struct scpi_parser_context* context, struct scpi_token* command);
@@ -41,5 +43,7 @@ scpi_error_t valve3_getstate(struct scpi_parser_context* context, struct scpi_to
 scpi_error_t valve4_open(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t valve4_close(struct scpi_parser_context* context, struct scpi_token* command);
 scpi_error_t valve4_getstate(struct scpi_parser_context* context, struct scpi_token* command);
+
+scpi_error_t sample_holder_getstate(struct scpi_parser_context* context, struct scpi_token* command);
 
 #endif

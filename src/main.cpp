@@ -8,6 +8,7 @@
 #include <scpiparser.h>
 #include <gauge.hpp>
 #include <valve.hpp>
+#include <sample_holder.hpp>
 
 #include "scpi_commands.hpp"
 
@@ -19,6 +20,8 @@ gauge optics;
 gauge cryo;
 gauge ccd;
 
+// Sample holder
+sample_holder holder;
 
 // Gate valves
 blockable_valve valve1(lpq, sample);
@@ -65,11 +68,11 @@ void setup(void){
     
     // Initialize and connect the vacuum components
     // Relay output of the TPG Controller(s)
-    lpq.connect(CONTROLLINO_A11);
-    sample.connect(CONTROLLINO_A12);
-    optics.connect(CONTROLLINO_A13);
-    cryo.connect(CONTROLLINO_A14);
-    ccd.connect(CONTROLLINO_A15);
+    lpq.connect(CONTROLLINO_A8);
+    sample.connect(CONTROLLINO_A9);
+    optics.connect(CONTROLLINO_A10);
+    cryo.connect(CONTROLLINO_A11);
+    ccd.connect(CONTROLLINO_A12);
 
     valve1.connect(CONTROLLINO_D0, CONTROLLINO_A0, CONTROLLINO_A1);
     valve2.connect(CONTROLLINO_D1, CONTROLLINO_A2, CONTROLLINO_A3);
@@ -110,6 +113,10 @@ void setup(void){
     scpi_register_command(v4, SCPI_CL_CHILD, "CLOSE", 5, "C", 1, valve4_close);
     scpi_register_command(v4, SCPI_CL_CHILD, "STATE?", 6, "ST?", 3, valve4_getstate);
     
+    // Generate sample holder command tree
+    struct scpi_command* sh;
+    sh = scpi_register_command(ctx.command_tree, SCPI_CL_CHILD, "SAMPLE", 6, "SMPL", 4, NULL);
+    scpi_register_command(sh, SCPI_CL_CHILD, "STATE?", 6, "ST?", 3, sample_holder_getstate);
     
     // Start server and enable interrupts
     server.begin();
@@ -163,6 +170,9 @@ void loop(){
         valve2.update_state();
         valve3.update_state();
         valve4.update_state();
+        
+        // sample holder
+        holder.update_state();
 
         delay(20);
         digitalWrite(CONTROLLINO_D8, LOW);
