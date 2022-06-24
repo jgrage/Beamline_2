@@ -73,6 +73,8 @@ void setup(void){
     optics.connect(CONTROLLINO_A10);
     cryo.connect(CONTROLLINO_A11);
     ccd.connect(CONTROLLINO_A12);
+    
+    holder.connect(CONTROLLINO_I18);
 
     valve1.connect(CONTROLLINO_D0, CONTROLLINO_A0, CONTROLLINO_A1);
     valve2.connect(CONTROLLINO_D1, CONTROLLINO_A2, CONTROLLINO_A3);
