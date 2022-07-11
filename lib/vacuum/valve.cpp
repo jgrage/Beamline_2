@@ -55,7 +55,7 @@ void blockable_valve::update_state(){
     
     
     if ((closed == HIGH) && (open == LOW)){
-        // Closed valve. Check if blocked because of difference in pressures
+        // Valve is closed. Check if blocked because of difference in pressures
         if (left.state == right.state){
             state = CLOSED;
         }
@@ -66,8 +66,17 @@ void blockable_valve::update_state(){
         
     }
     else if ((closed == LOW) && (open == HIGH)){
-        // Open valve
+        // Valve is currently open
         state = OPEN;
+        
+        /* !!! NOT YET TESTED !!!
+         * Close the valve automatically if a leak causes a difference
+         * in pressure. Depending on the distance of the pressure
+         * sensors and the setpoints this should trigger on medium
+         * sized leaks in the system */
+        if (left.state != right.state){
+            close();
+        }
     }
     
     else{
@@ -106,7 +115,7 @@ void obstructable_valve::update_state(){
     
     
     if ((closed == HIGH) && (open == LOW)){
-        // Closed valve. Check if blocked because of difference in pressures
+        // Valve is closed. Check if blocked because of difference in pressures
         if (left.state == right.state){
             state = CLOSED;
         }
@@ -117,7 +126,9 @@ void obstructable_valve::update_state(){
         
     }
     else if ((closed == LOW) && (open == HIGH)){
-        // Open valve
+        /* Valve is open. An obstructible valve will not close
+         * automatically on changing pressure to prevent 
+         * damage to the equipment */
         if (locked == HIGH){
             state = OPEN;
         }
@@ -125,49 +136,6 @@ void obstructable_valve::update_state(){
         else{
             state = OPEN_BLOCKED;
         }
-    }
-    
-    else{
-        state = MOVING;
-    }
-    return;
-}
-
-/* ------------------
- * Closed dummy valve
- * ------------------
- */
-angle_valve::angle_valve(valve& first_valve, valve& second_valve) : first(first_valve), second(second_valve){
-    return;
-}
-
-void angle_valve::connect_third_valve(valve *third_valve){
-    third = third_valve;
-    return;
-}
-
-void angle_valve::update_state(){
-    int closed = digitalRead(_encoder_closed_pin);
-    int open = digitalRead(_encoder_open_pin);    
-    
-    if ((closed == HIGH) && (open == LOW)){
-        // Closed valve. Check if blocked because of the state of the other valves on the chamber
-        
-        if ( ((first.state == CLOSED_BLOCKED) || (first.state == CLOSED)) && ((second.state == CLOSED_BLOCKED) || (second.state == CLOSED)) && ((third->state == CLOSED_BLOCKED) || (third->state == CLOSED)) ){
-            state = CLOSED;
-        }
-        /*
-        if ( (third->state == CLOSED_BLOCKED) ){
-            state = CLOSED;
-        }
-        */
-        else{
-            state = CLOSED_BLOCKED;
-        }
-        
-    }
-    else if ((closed == LOW) && (open == HIGH)){
-        state = OPEN;
     }
     
     else{
